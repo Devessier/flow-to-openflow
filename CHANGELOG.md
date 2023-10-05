@@ -1,5 +1,11 @@
 # @devessier/flow-to-openflow
 
+## 0.0.3
+
+### Patch Changes
+
+- 309fb84: Set publishConfig in package.json
+
 ## 0.0.2
 
 ### Patch Changes
