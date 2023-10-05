@@ -1,6 +1,6 @@
 {
   "name": "@devessier/flow-to-openflow",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "exports": {
     ".": {
@@ -12,7 +12,10 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "package.json"],
+  "files": [
+    "dist",
+    "package.json"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run generate-windmill-sdk && tsup",
