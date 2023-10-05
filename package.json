@@ -1,5 +1,5 @@
 {
-  "name": "flow-to-openflow",
+  "name": "@devessier/flow-to-openflow",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
@@ -8,7 +8,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run generate-windmill-sdk && tsup",
-    "generate-windmill-sdk": "openapi --input ./windmill/openapi.yaml --output ./windmill/gen --useOptions"
+    "generate-windmill-sdk": "openapi --input ./windmill/openapi.yaml --output ./windmill/gen --useOptions",
+    "publish": "changeset publish",
+    "version": "changeset version"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,7 @@
     "node": "20.8.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
     "openapi-typescript-codegen": "^0.25.0",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
