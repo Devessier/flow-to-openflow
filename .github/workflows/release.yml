@@ -29,6 +29,10 @@ jobs:
         with:
           node-version: 20.x
 
+      - name: Install Dependencies
+        run: npm ci
+        shell: bash
+
       - name: Build
         run: npm run build
         shell: bash
