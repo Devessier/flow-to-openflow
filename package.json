@@ -1,6 +1,6 @@
 {
   "name": "@devessier/flow-to-openflow",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run generate-windmill-sdk && tsup",
     "generate-windmill-sdk": "openapi --input ./windmill/openapi.yaml --output ./windmill/gen --useOptions",
-    "publish": "changeset publish",
+    "release": "changeset publish",
     "version": "changeset version"
   },
   "repository": {
