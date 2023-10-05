@@ -6,22 +6,28 @@ type Node = {
   | {
       type: "action";
       actionName: string;
-      inputs: [];
+      inputs: Array<{ parameter: string; expression: string }>;
     }
   | {
       type: "condition";
+      summary?: string;
       conditions: Array<{ id: string; label: string; expression: string }>;
     }
   | {
       type: "input";
-      properties: Array<{ name: string; type: string }>;
+      properties: Array<{
+        name: string;
+        type: string;
+        description?: string;
+        required?: boolean;
+      }>;
     }
 );
 
 interface Edge {
   id: string;
   source: string;
-  sourceHandle: string;
+  sourceHandle?: string;
   target: string;
 }
 
@@ -64,13 +70,6 @@ function addNodesToModuleList({
   edges: FlowEdge[];
   modules: FlowModule[];
 }) {
-  console.log("add node to module list", {
-    initialNode,
-    edges,
-    nodes,
-    modules,
-  });
-
   switch (initialNode.type) {
     case "input": {
       break;
@@ -109,10 +108,6 @@ function addNodesToModuleList({
           (node) => node.id === defaultCaseEdge.target
         );
         if (defaultCaseFirstNode === undefined) {
-          console.error("Could not find default case node for condition", {
-            defaultCaseEdgeId: defaultCaseEdge.id,
-          });
-
           break;
         }
 
@@ -133,10 +128,6 @@ function addNodesToModuleList({
             edge.source === initialNode.id && edge.sourceHandle === condition.id
         );
         if (branchEdge === undefined) {
-          console.error("Could not find case edge for condition", {
-            initialNodeId: initialNode.id,
-          });
-
           break;
         }
 
@@ -144,10 +135,6 @@ function addNodesToModuleList({
           (node) => node.id === branchEdge.target
         );
         if (branchFirstNode === undefined) {
-          console.error("Could not find case node for condition", {
-            branchEdgeId: branchEdge.id,
-          });
-
           break;
         }
 
@@ -169,7 +156,7 @@ function addNodesToModuleList({
 
       const conditionModule: FlowModule = {
         id: initialNode.id,
-        summary: "",
+        summary: initialNode.summary ?? "",
         value: {
           type: "branchone",
           default: defaultModules,
@@ -261,12 +248,14 @@ export function buildFlowsFromNodesAndEdges({
           startNode.properties.map((property) => [
             property.name,
             {
-              description: "",
+              description: property.description ?? "",
               type: property.type.toLowerCase(),
             },
           ])
         ),
-        required: [],
+        required: startNode.properties
+          .filter((property) => property.required === true)
+          .map((property) => property.name),
       },
     },
   };
