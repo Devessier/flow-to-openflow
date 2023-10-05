@@ -1,5 +1,11 @@
 # @devessier/flow-to-openflow
 
+## 0.0.4
+
+### Patch Changes
+
+- 53b0beb: Support description/summary and required input properties
+
 ## 0.0.3
 
 ### Patch Changes
