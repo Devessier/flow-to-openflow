@@ -2,9 +2,13 @@
   "name": "flow-to-openflow",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run generate-windmill-sdk && tsup",
+    "generate-windmill-sdk": "openapi --input ./windmill/openapi.yaml --output ./windmill/gen --useOptions"
   },
   "repository": {
     "type": "git",
@@ -21,6 +25,8 @@
     "node": "20.8.0"
   },
   "devDependencies": {
-    "tsup": "^7.2.0"
+    "openapi-typescript-codegen": "^0.25.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
   }
 }
