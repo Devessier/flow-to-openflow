@@ -77,8 +77,8 @@ test("Generate input, actions and conditions", ({ expect }) => {
   });
 
   expect(flowResult).toMatchInlineSnapshot(`
-    {
-      "flow": {
+    [
+      {
         "description": "",
         "schema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -147,7 +147,6 @@ test("Generate input, actions and conditions", ({ expect }) => {
           ],
         },
       },
-      "ok": true,
-    }
+    ]
   `);
 });
