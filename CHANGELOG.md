@@ -1,5 +1,11 @@
 # @devessier/flow-to-openflow
 
+## 0.0.5
+
+### Patch Changes
+
+- 3958c1b: Return all flows
+
 ## 0.0.4
 
 ### Patch Changes
