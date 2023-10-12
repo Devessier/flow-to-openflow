@@ -7,53 +7,61 @@ test("Generate input, actions and conditions", ({ expect }) => {
       {
         id: "node-1",
         type: "input",
-        properties: [
-          {
-            name: "agent_name",
-            type: "string",
-          },
-          {
-            name: "agent_email",
-            type: "string",
-          },
-          {
-            name: "agent_phone_number",
-            type: "string",
-          },
-        ],
+        data: {
+          properties: [
+            {
+              name: "agent_name",
+              type: "string",
+            },
+            {
+              name: "agent_email",
+              type: "string",
+            },
+            {
+              name: "agent_phone_number",
+              type: "string",
+            },
+          ],
+        },
       },
       {
         id: "node-2",
         type: "action",
-        actionName: "Send email",
-        inputs: [
-          {
-            parameter: "email",
-            expression: "flow_input.agent_email",
-          },
-        ],
+        data: {
+          actionName: "Send email",
+          inputs: [
+            {
+              parameter: "email",
+              expression: "flow_input.agent_email",
+            },
+          ],
+        },
       },
       {
         id: "node-3",
         type: "condition",
-        conditions: [
-          {
-            id: "cond-3-1",
-            label: "is admin",
-            expression: "flow_input.agent_name === 'admin'",
-          },
-        ],
+        data: {
+          conditions: [
+            {
+              id: "cond-3-1",
+              label: "is admin",
+              expression: "flow_input.agent_name === 'admin'",
+            },
+          ],
+        },
       },
       {
         id: "node-4",
         type: "action",
-        actionName: "Send SMS",
-        inputs: [
-          {
-            parameter: "phone_number",
-            expression: "flow_input.agent_phone_number",
-          },
-        ],
+        data: {
+          actionName: "Send SMS",
+          inputs: [
+            {
+              parameter: "phone_number",
+              expression: "flow_input.agent_phone_number",
+            },
+          ],
+        },
       },
     ],
     edges: [
