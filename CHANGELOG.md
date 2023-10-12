@@ -1,5 +1,25 @@
 # @devessier/flow-to-openflow
 
+## 0.0.6
+
+### Patch Changes
+
+- f1a7537: Put nodes payload in a `data` property.
+
+  Use `input` nodes to define the `summary` and the `description` fields of the flow through `flowSummary` and `flowDescription` properties:
+
+  ```ts
+  const node = {
+    id: "id",
+    type: "input",
+    data: {
+      flowSummary: "summary", // mandatory
+      flowDescription: "",
+      // ...
+    },
+  };
+  ```
+
 ## 0.0.5
 
 ### Patch Changes
