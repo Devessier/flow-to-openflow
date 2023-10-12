@@ -8,6 +8,8 @@ test("Generate input, actions and conditions", ({ expect }) => {
         id: "node-1",
         type: "input",
         data: {
+          flowSummary: "test flow",
+          flowDescription: "flow description",
           properties: [
             {
               name: "agent_name",
@@ -87,7 +89,7 @@ test("Generate input, actions and conditions", ({ expect }) => {
   expect(flowResult).toMatchInlineSnapshot(`
     [
       {
-        "description": "",
+        "description": "flow description",
         "schema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "properties": {
@@ -107,7 +109,7 @@ test("Generate input, actions and conditions", ({ expect }) => {
           "required": [],
           "type": "object",
         },
-        "summary": "",
+        "summary": "test flow",
         "value": {
           "modules": [
             {

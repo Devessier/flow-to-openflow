@@ -1,4 +1,4 @@
-import { BranchOne, FlowModule, OpenFlow, FlowValue } from "../windmill/gen";
+import { BranchOne, FlowModule, OpenFlow } from "../windmill/gen";
 
 export type Node = {
   id: string;
@@ -20,6 +20,8 @@ export type Node = {
   | {
       type: "input";
       data: {
+        flowSummary: string;
+        flowDescription?: string;
         properties: Array<{
           name: string;
           type: string;
@@ -213,8 +215,8 @@ export function buildFlowsFromNodesAndEdges({
   const startNodes = nodes.filter(isInputNode);
 
   return startNodes.map((startNode) => ({
-    summary: "",
-    description: "",
+    summary: startNode.data.flowSummary,
+    description: startNode.data.flowDescription ?? "",
     value: {
       modules: addNodesToModuleList({
         initialNode: startNode,
