@@ -5,22 +5,30 @@ export type Node = {
 } & (
   | {
       type: "action";
-      actionName: string;
-      inputs: Array<{ parameter: string; expression: string }>;
+      data: {
+        actionName: string;
+        inputs: Array<{ parameter: string; expression: string }>;
+      };
     }
   | {
       type: "condition";
-      summary?: string;
-      conditions: Array<{ id: string; label: string; expression: string }>;
+      data: {
+        summary?: string;
+        conditions: Array<{ id: string; label: string; expression: string }>;
+      };
     }
   | {
       type: "input";
-      properties: Array<{
-        name: string;
-        type: string;
-        description?: string;
-        required?: boolean;
-      }>;
+      data: {
+        flowSummary: string;
+        flowDescription?: string;
+        properties: Array<{
+          name: string;
+          type: string;
+          description?: string;
+          required?: boolean;
+        }>;
+      };
     }
 );
 
@@ -76,9 +84,9 @@ function addNodesToModuleList({
         id: initialNode.id,
         value: {
           type: "script",
-          path: initialNode.actionName!,
+          path: initialNode.data.actionName,
           input_transforms: Object.fromEntries(
-            initialNode.inputs.map(({ parameter, expression }) => [
+            initialNode.data.inputs.map(({ parameter, expression }) => [
               parameter,
               {
                 type: "javascript",
@@ -118,8 +126,7 @@ function addNodesToModuleList({
 
       const branches: BranchOne["branches"] = [];
 
-      for (const condition of (initialNode as Node & { type: "condition" })
-        .conditions) {
+      for (const condition of initialNode.data.conditions) {
         const branchEdge = edges.find(
           (edge) =>
             edge.source === initialNode.id && edge.sourceHandle === condition.id
@@ -153,7 +160,7 @@ function addNodesToModuleList({
 
       const conditionModule: FlowModule = {
         id: initialNode.id,
-        summary: initialNode.summary ?? "",
+        summary: initialNode.data.summary ?? "",
         value: {
           type: "branchone",
           default: defaultModules,
@@ -205,15 +212,11 @@ export function buildFlowsFromNodesAndEdges({
   edges: Edge[];
   nodes: Node[];
 }): OpenFlow[] {
-  const startNodes = nodes.filter((n) => n.type === "input") as Array<
-    Node & {
-      type: "input";
-    }
-  >;
+  const startNodes = nodes.filter(isInputNode);
 
   return startNodes.map((startNode) => ({
-    summary: "",
-    description: "",
+    summary: startNode.data.flowSummary,
+    description: startNode.data.flowDescription ?? "",
     value: {
       modules: addNodesToModuleList({
         initialNode: startNode,
@@ -226,7 +229,7 @@ export function buildFlowsFromNodesAndEdges({
       $schema: "https://json-schema.org/draft/2020-12/schema",
       type: "object",
       properties: Object.fromEntries(
-        startNode.properties.map((property) => [
+        startNode.data.properties.map((property) => [
           property.name,
           {
             description: property.description ?? "",
@@ -234,9 +237,13 @@ export function buildFlowsFromNodesAndEdges({
           },
         ])
       ),
-      required: startNode.properties
+      required: startNode.data.properties
         .filter((property) => property.required === true)
         .map((property) => property.name),
     },
   }));
+}
+
+function isInputNode(node: Node): node is Node & { type: "input" } {
+  return node.type === "input";
 }
