@@ -1,4 +1,9 @@
-import { BranchOne, FlowModule, OpenFlow } from "../windmill/gen";
+import {
+  BranchOne,
+  FlowModule,
+  InputTransform,
+  OpenFlow,
+} from "../windmill/gen";
 
 export type Node = {
   id: string;
@@ -7,7 +12,7 @@ export type Node = {
       type: "action";
       data: {
         actionName: string;
-        inputs: Array<{ parameter: string; expression: string }>;
+        inputs: Array<{ parameter: string } & InputTransform>;
       };
     }
   | {
@@ -86,12 +91,9 @@ function addNodesToModuleList({
           type: "script",
           path: initialNode.data.actionName,
           input_transforms: Object.fromEntries(
-            initialNode.data.inputs.map(({ parameter, expression }) => [
+            initialNode.data.inputs.map(({ parameter, ...input }) => [
               parameter,
-              {
-                type: "javascript",
-                expr: expression,
-              },
+              input,
             ])
           ),
         },
