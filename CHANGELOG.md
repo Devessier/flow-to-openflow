@@ -1,5 +1,11 @@
 # @devessier/flow-to-openflow
 
+## 0.0.7
+
+### Patch Changes
+
+- 5055323: Let consumers set whether action inputs are static or dynamic javascript expressions
+
 ## 0.0.6
 
 ### Patch Changes
