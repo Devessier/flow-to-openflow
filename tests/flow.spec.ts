@@ -34,7 +34,8 @@ test("Generate input, actions and conditions", ({ expect }) => {
           inputs: [
             {
               parameter: "email",
-              expression: "flow_input.agent_email",
+              type: "javascript",
+              expr: "flow_input.agent_email",
             },
           ],
         },
@@ -60,7 +61,13 @@ test("Generate input, actions and conditions", ({ expect }) => {
           inputs: [
             {
               parameter: "phone_number",
-              expression: "flow_input.agent_phone_number",
+              type: "javascript",
+              expr: "flow_input.agent_phone_number",
+            },
+            {
+              parameter: "static_input",
+              type: "static",
+              value: `"0606060606"`,
             },
           ],
         },
@@ -140,6 +147,10 @@ test("Generate input, actions and conditions", ({ expect }) => {
                             "phone_number": {
                               "expr": "flow_input.agent_phone_number",
                               "type": "javascript",
+                            },
+                            "static_input": {
+                              "type": "static",
+                              "value": "\\"0606060606\\"",
                             },
                           },
                           "path": "Send SMS",
