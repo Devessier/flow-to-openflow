@@ -1,5 +1,11 @@
 # @devessier/flow-to-openflow
 
+## 0.0.8
+
+### Patch Changes
+
+- 7a30c58: Add support for branchall
+
 ## 0.0.7
 
 ### Patch Changes
