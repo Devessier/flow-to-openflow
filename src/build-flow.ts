@@ -1,4 +1,5 @@
 import {
+  BranchAll,
   BranchOne,
   FlowModule,
   InputTransform,
@@ -20,6 +21,13 @@ export type Node = {
       data: {
         summary?: string;
         conditions: Array<{ id: string; label: string; expression: string }>;
+      };
+    }
+  | {
+      type: "branchall";
+      data: {
+        branches: Array<{ id: string; summary?: string }>;
+        parallel?: boolean;
       };
     }
   | {
@@ -174,12 +182,61 @@ function addNodesToModuleList({
 
       break;
     }
+    case "branchall": {
+      const branches: BranchAll["branches"] = [];
+
+      for (const branch of initialNode.data.branches) {
+        const branchEdge = edges.find(
+          (edge) =>
+            edge.source === initialNode.id && edge.sourceHandle === branch.id
+        );
+        if (branchEdge === undefined) {
+          break;
+        }
+
+        const branchFirstNode = nodes.find(
+          (node) => node.id === branchEdge.target
+        );
+        if (branchFirstNode === undefined) {
+          break;
+        }
+
+        const branchModules: FlowModule[] = [];
+
+        addNodesToModuleList({
+          initialNode: branchFirstNode,
+          edges,
+          nodes,
+          modules: branchModules,
+        });
+
+        branches.push({
+          summary: branch.summary,
+          modules: branchModules,
+          skip_failure: undefined, // TODO: to implement
+        });
+      }
+
+      const conditionModule: FlowModule = {
+        id: initialNode.id,
+        value: {
+          type: "branchall",
+          branches,
+          parallel: initialNode.data.parallel,
+        },
+      };
+
+      modules.push(conditionModule);
+
+      break;
+    }
     default: {
       break;
     }
   }
 
   switch (initialNode.type) {
+    case "branchall":
     case "condition": {
       /**
        * No other node can be put after a condition.
